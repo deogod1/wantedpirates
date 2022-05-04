@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wantedpirates/character.dart';
 import 'package:wantedpirates/enum_class_types.dart';
+import 'package:wantedpirates/video_player.dart';
 
 class ListCharactersPage extends StatefulWidget {
   final Classes type;
@@ -58,10 +59,50 @@ class _ListCharactersPageState extends State<ListCharactersPage> {
                                 ))
                             .toList(),
                       ),
-                      Text("Link: " + e.link)
+                      ElevatedButton(
+                        onPressed: () {
+                          if (e.link.isNotEmpty) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        videoPlayer(link: e.link)));
+                          } else {
+                            showAlertDialog(context);
+                          }
+                        },
+                        child: Text("Exemplo"),
+                      )
                     ],
                   ))
               .toList()),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Problema"),
+      content: Text("Video ainda não inserido!"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
