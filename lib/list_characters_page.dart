@@ -44,35 +44,50 @@ class _ListCharactersPageState extends State<ListCharactersPage> {
           children: charactersList
               .map((e) => Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Image.network(e.image),
+                      Card(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Image.network(e.image),
+                            ),
+                            Text(e.name),
+                            Text("Recomendados: "),
+                            Wrap(
+                              children: e.recomend
+                                  .map((e) => Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 8.0, bottom: 8.0, top: 8.0),
+                                        child: Text(e),
+                                      ))
+                                  .toList(),
+                            ),
+                            Wrap(
+                              children: e.link
+                                  .map((e) => Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 8.0, bottom: 8.0, top: 8.0),
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            if (e.isNotEmpty) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          videoPlayer(
+                                                              link: e)));
+                                            } else {
+                                              showAlertDialog(context);
+                                            }
+                                          },
+                                          child: Text("Exemplo"),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ],
+                        ),
                       ),
-                      Text(e.name),
-                      Text("Recomendados: "),
-                      Wrap(
-                        children: e.recomend
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 8.0, bottom: 8.0, top: 8.0),
-                                  child: Text(e),
-                                ))
-                            .toList(),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (e.link.isNotEmpty) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        videoPlayer(link: e.link)));
-                          } else {
-                            showAlertDialog(context);
-                          }
-                        },
-                        child: Text("Exemplo"),
-                      )
                     ],
                   ))
               .toList()),
